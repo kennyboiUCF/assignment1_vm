@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4F124D4D214A20F7001AECF2 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F124D4C214A20F7001AECF2 /* main.c */; };
+		4F124D55214A2151001AECF2 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F124D54214A2151001AECF2 /* main.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +24,8 @@
 
 /* Begin PBXFileReference section */
 		4F124D49214A20F7001AECF2 /* assignment1_vm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = assignment1_vm; sourceTree = BUILT_PRODUCTS_DIR; };
-		4F124D4C214A20F7001AECF2 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		4F124D53214A2151001AECF2 /* data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = data.h; sourceTree = "<group>"; };
+		4F124D54214A2151001AECF2 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = "../../../Downloads/assignment1-skeleton-master 2/main.c"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +58,8 @@
 		4F124D4B214A20F7001AECF2 /* assignment1_vm */ = {
 			isa = PBXGroup;
 			children = (
-				4F124D4C214A20F7001AECF2 /* main.c */,
+				4F124D53214A2151001AECF2 /* data.h */,
+				4F124D54214A2151001AECF2 /* main.c */,
 			);
 			path = assignment1_vm;
 			sourceTree = "<group>";
@@ -118,7 +120,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F124D4D214A20F7001AECF2 /* main.c in Sources */,
+				4F124D55214A2151001AECF2 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
