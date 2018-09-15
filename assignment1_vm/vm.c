@@ -22,6 +22,9 @@ void dumpStack(FILE*, int* stack, int sp, int bp);
 
 int executeInstruction(VirtualMachine* vm, Instruction ins, FILE* vmIn, FILE* vmOut);
 
+int base(int l, int base);
+
+
 /* ************************************************************************************ */
 /* Global Data and misc structs & enums                                                 */
 /* ************************************************************************************ */
@@ -150,6 +153,205 @@ int executeInstruction(VirtualMachine* vm, Instruction ins, FILE* vmIn, FILE* vm
     switch(ins.op)
     {
         // TODO
+        
+        case 1: // LIT R 0 M
+        {
+            vm->RF[ins.r] = ins.m;
+            break;
+        }
+        case 2: // RTN 0 0 0
+        {
+            vm->SP = vm->BP - 1;
+            vm->BP = vm->stack[vm->SP + 3];
+            vm->PC = vm->stack[vm->SP + 4];
+            break;
+        }
+        case 3: // LOD R L M // WORK ON THISSSS SOON
+        {
+            vm->RF[ins.r] = ins.m;
+            break;
+        }
+        
+        case 4: // STORE FUNCTION, WORK ON BP
+        {
+            vm->SP = vm->BP - 1;
+            vm->BP = vm->stack[vm->SP + 3];
+            vm->PC = vm->stack[vm->SP + 4];
+            break;
+        }
+        
+        case 5: // CALL TO A FUNCTION [CAL 0, L, M]
+        {
+            vm->stack[vm->SP + 1] = 0;
+            vm->stack[vm->SP + 2] = base(ins.l, vm->BP);
+            vm->stack[vm->SP + 3] = vm->BP;
+            vm->stack[vm->SP + 4] = vm->PC;
+            vm->BP = vm->SP + 1;
+            vm->PC = ins.m;
+            break;
+        }
+        
+        case 6: // [INC X, X, X]
+        {
+            vm->SP = vm->SP + ins.m;
+            break;
+        }
+        
+        case 7: // [JMP X, X, X] JUMP FUNCTION!!!
+        {
+            vm->PC = ins.m;
+            break;
+        }
+        
+        case 8: // [JPC X, X, X] JUMP POINTER FUNCTION!!!
+        {
+            if (vm->RF[ins.r] == 0)
+            {
+                vm->PC = ins.m;
+            }
+            break;
+        }
+        
+        case 9: // [SIO R, X, 1]
+        {
+            fprintf(vmOut, "%d ", vm->RF[ins.r]);
+            break;
+        }
+        
+        case 10: // [SIO R, X, 2] // WORK ON THIS
+        {
+            vm->PC = ins.m;
+            break;
+        }
+        
+        case 11: // [SIO R, X, 2] 
+        {
+            return HALT;
+            break;
+        }
+        
+        case 12: // NEGATION;
+        {
+            vm->RF[ins.r] = -(vm->RF[ins.l]);
+            break;
+        }
+        
+        case 13: // ADDITION;
+        {
+            vm->RF[ins.r] =  vm->RF[ins.l] + vm->RF[ins.m];
+            break;
+        }
+        
+        case 14: // SUBTRACTION;
+        {
+            vm->RF[ins.r] =  vm->RF[ins.l] - vm->RF[ins.m];
+            break;
+        }
+        
+        case 15: // MULTIPLICATION;
+        {
+            vm->RF[ins.r] =  vm->RF[ins.l] * vm->RF[ins.m];
+            break;
+        }
+        
+        case 16: // DIVISION;
+        {
+            vm->RF[ins.r] =  vm->RF[ins.l] / vm->RF[ins.m];
+            break;
+        }
+        
+        case 17: // ODD NUMBER;
+        {
+            vm->RF[ins.r] =  vm->RF[ins.r] % 2;
+            break;
+        }
+        
+        case 18: // MODULO;
+        {
+            vm->RF[ins.r] =  vm->RF[ins.l] % vm->RF[ins.m];
+            break;
+        }
+        
+        case 19: // BRANCH EQUAL;
+        {
+            if (vm->RF[ins.l] ==  vm->RF[ins.m])
+            {
+                vm->RF[ins.r] = 1;
+            }
+            
+            else
+                vm->RF[ins.r] = 0;
+            break;
+        }
+        
+        case 20: // BRANCH NOT EQUAL;
+        {
+            if (vm->RF[ins.l] !=  vm->RF[ins.m])
+            {
+                vm->RF[ins.r] = 1;
+            }
+            
+            else
+                vm->RF[ins.r] = 0;
+            break;
+        }
+        
+        case 21: // BRANCH LESS;
+        {
+            if (vm->RF[ins.l] <  vm->RF[ins.m])
+            {
+                vm->RF[ins.r] = 1;
+            }
+            
+            else
+            {
+                vm->RF[ins.r] = 0;
+            }
+            break;
+        }
+        
+        case 22: // BRANCH LESS EQUAL TO;
+        {
+            if (vm->RF[ins.l] <=  vm->RF[ins.m])
+            {
+                vm->RF[ins.r] = 1;
+            }
+            
+            else
+            {
+                vm->RF[ins.r] = 0;
+            }
+            break;
+        }
+        
+        case 23: // BRANCH GREATER;
+        {
+            if (vm->RF[ins.l] >  vm->RF[ins.m])
+            {
+                vm->RF[ins.r] = 1;
+            }
+            
+            else
+            {
+                vm->RF[ins.r] = 0;
+            }
+            break;
+        }
+        
+        case 24: // BRANCH GREATER EQ;
+        {
+            if (vm->RF[ins.l] >=  vm->RF[ins.m])
+            {
+                vm->RF[ins.r] = 1;
+            }
+            
+            else
+            {
+                vm->RF[ins.r] = 0;
+            }
+            break;
+        }
+        
         default:
             fprintf(stderr, "Illegal instruction?");
             return HALT;
@@ -234,4 +436,16 @@ void simulateVM(
     // Above loop ends when machine halts. Therefore, dump halt message.
     fprintf(outp, "HLT\n");
     return;
+}
+
+int base (int l, int base)
+{
+    int b1;
+    b1 = base;
+    while (l > 0)
+    {
+        b1 = vm->stack [ b1 +1];
+        l--;
+    }
+    return b1;
 }
