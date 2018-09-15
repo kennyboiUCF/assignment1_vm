@@ -55,7 +55,26 @@ void initVM(VirtualMachine* vm)
 {
     if(vm)
     {
-        // TODO
+        vm->SP = 0;
+        vm->BP = 1;
+        vm->PC = 0;
+        vm->SP = 0;
+        
+        for(int i = 0; i < 2000; i++)
+        {
+            if (i <= 15)
+            {
+                vm->RF[i] = 0;
+                vm->stack[i] = 0;
+            }
+            
+            else
+            {
+                vm->stack[i] = 0;
+            }
+        }
+        
+
     }
 }
 
