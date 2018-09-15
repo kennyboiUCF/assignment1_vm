@@ -400,53 +400,48 @@ void simulateVM(
     FILE* vm_outp
     )
 {
-    // Read instructions from file
-    // TODO
-
-    // Dump instructions to the output file
-    // TODO
+    
+    Instruction ins;
+    
+    int i = readInstructions(inp, &ins);
+    
+    
+    dumpInstructions(outp, &ins, i);
 
     // Before starting the code execution on the virtual machine,
     // .. write the header for the simulation part (***Execution***)
     fprintf(outp, "\n***Execution***\n");
-    fprintf(
-        outp,
-        "%3s %3s %3s %3s %3s %3s %3s %3s %3s \n",         // formatting
-        "#", "OP", "R", "L", "M", "PC", "BP", "SP", "STK" // titles
+    fprintf(outp, "%3s %3s %3s %3s %3s %3s %3s %3s %3s \n",         // formatting
+            "#", "OP", "R", "L", "M", "PC", "BP", "SP", "STK" // titles
     );
+    
+    VirtualMachine vm;
 
-    // Create a virtual machine
-    // TODO
-
-    // Initialize the virtual machine
-    // TODO
+    initVM(&vm);
+    
+    int halt = 0;
 
     // Fetch&Execute the instructions on the virtual machine until halting
-    while( 1 /* TODO: Until halt is signalled.. */ )
+    while(halt != HALT)
     {
-        // Fetch
-        // TODO
+        vm.IR =
+        vm.PC = vm.PC + 1; // FETCH PROCESS
 
-        // Advance PC - before execution!
-        // TODO
-
-        // Execute the instruction
-        // TODO
+        int halt = executeInstruction(&vm, ins, vm_inp, vm_outp);
 
         // Print current state
         // TODO: Following is a possible way of printing the current state
         // .. where instrBeingExecuted is the address of the instruction at vm
         // ..  memory and instr is the instruction being executed.
-        /* fprintf(
+         fprintf(
             outp,
             "%3d %3s %3d %3d %3d %3d %3d %3d ",
-            instrBeingExecuted, // place of instruction at memory
-             opcodes[instr.op], instr.r, instr.l, instr.m, // instruction info
+            vm.IR, // place of instruction at memory
+             opcodes[ins.op], ins.r, ins.l, ins.m, // instruction info
              vm.PC, vm.BP, vm.SP // vm info
-        );*/
+        );
 
-        // Print stack info
-        // TODO
+        dumpStack(vm_outp, vm.stack, vm.SP, vm.BP);
 
         fprintf(outp, "\n");
     }
