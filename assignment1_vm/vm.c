@@ -166,19 +166,18 @@ int executeInstruction(VirtualMachine* vm, Instruction ins, FILE* vmIn, FILE* vm
             vm->PC = vm->stack[vm->SP + 4];
             break;
         }
-        case 3: // LOD R L M // WORK ON THISSSS SOON
+        case 3: // LOD R L M
         {
-            vm->RF[ins.r] = ins.m;
+            vm->RF[ins.r] = vm->stack[base(ins.l, vm->BP) + ins.m];
             break;
         }
         
         case 4: // STORE FUNCTION, WORK ON BP
         {
-            vm->SP = vm->BP - 1;
-            vm->BP = vm->stack[vm->SP + 3];
-            vm->PC = vm->stack[vm->SP + 4];
+            vm->stack[base(ins.l, vm->BP) + ins.m] = vm->RF[ins.r];
             break;
         }
+        
         
         case 5: // CALL TO A FUNCTION [CAL 0, L, M]
         {
@@ -218,13 +217,13 @@ int executeInstruction(VirtualMachine* vm, Instruction ins, FILE* vmIn, FILE* vm
             break;
         }
         
-        case 10: // [SIO R, X, 2] // WORK ON THIS
+        case 10: // [SIO R, X, 2] // WORK ON THIS RED FUNCTION
         {
             vm->PC = ins.m;
             break;
         }
         
-        case 11: // [SIO R, X, 2] 
+        case 11: // [SIO R, X, 2]
         {
             return HALT;
             break;
