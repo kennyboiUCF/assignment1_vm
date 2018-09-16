@@ -435,7 +435,7 @@ void simulateVM(
     // Fetch&Execute the instructions on the virtual machine until halting
     while(halt != HALT)
     {
-        vm.IR =
+        vm.IR = ins.op;
         vm.PC = vm.PC + 1; // FETCH PROCESS
 
         int halt = executeInstruction(&vm, ins, vm_inp, vm_outp);
