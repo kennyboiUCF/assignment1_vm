@@ -249,7 +249,7 @@ int executeInstruction(VirtualMachine* vm, Instruction ins, FILE* vmIn, FILE* vm
             int val;
             printf("Please, enter a value to read... ");
             scanf("%d", &val);
-            vm->stack[vm->SP] = val;
+            vm->RF[ins.r] = val;
             break;
         }
         
