@@ -22,7 +22,7 @@ void dumpStack(FILE*, int* stack, int sp, int bp);
 
 int executeInstruction(VirtualMachine* vm, Instruction ins, FILE* vmIn, FILE* vmOut);
 
-int base(int l, int base);
+int base(int l, int base, int *stack);
 
 
 /* ************************************************************************************ */
@@ -187,13 +187,13 @@ int executeInstruction(VirtualMachine* vm, Instruction ins, FILE* vmIn, FILE* vm
         }
         case 3: // LOD R L M
         {
-            vm->RF[ins.r] = vm->stack[base(ins.l, vm->BP) + ins.m];
+            vm->RF[ins.r] = vm->stack[base(ins.l, vm->BP, vm->stack) + ins.m];
             break;
         }
         
         case 4: // STORE FUNCTION, WORK ON BP
         {
-            vm->stack[base(ins.l, vm->BP) + ins.m] = vm->RF[ins.r];
+            vm->stack[base(ins.l, vm->BP, vm->stack) + ins.m] = vm->RF[ins.r];
             break;
         }
         
@@ -201,7 +201,7 @@ int executeInstruction(VirtualMachine* vm, Instruction ins, FILE* vmIn, FILE* vm
         case 5: // CALL TO A FUNCTION [CAL 0, L, M]
         {
             vm->stack[vm->SP + 1] = 0;
-            vm->stack[vm->SP + 2] = base(ins.l, vm->BP);
+            vm->stack[vm->SP + 2] = base(ins.l, vm->BP, vm->stack);
             vm->stack[vm->SP + 3] = vm->BP;
             vm->stack[vm->SP + 4] = vm->PC;
             vm->BP = vm->SP + 1;
@@ -236,7 +236,7 @@ int executeInstruction(VirtualMachine* vm, Instruction ins, FILE* vmIn, FILE* vm
             break;
         }
         
-        case 10: // [SIO R, X, 2] 
+        case 10: // [SIO R, X, 2]
         {
             int val;
             printf("Please, enter a value to read... ");
@@ -454,13 +454,13 @@ void simulateVM(
     return;
 }
 
-int base (int l, int base)
+int base (int l, int base, int *stack)
 {
     int b1;
     b1 = base;
     while (l > 0)
     {
-        b1 = vm->stack [ b1 +1];
+        b1 = stack[b1 +1];
         l--;
     }
     return b1;
