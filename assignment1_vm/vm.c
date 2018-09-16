@@ -124,7 +124,15 @@ void dumpInstructions(FILE* out, Instruction* ins, int numOfIns)
  * */
 int getBasePointer(int *stack, int currentBP, int L)
 {
-    // TODO
+    int b1;
+    b1 = currentBP;
+    while (L > 0)
+    {
+        b1 = stack[b1+1];
+        L--;
+    }
+    return b1;
+    
 }
 
 // Function that dumps the whole stack into output file
