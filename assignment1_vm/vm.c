@@ -236,9 +236,12 @@ int executeInstruction(VirtualMachine* vm, Instruction ins, FILE* vmIn, FILE* vm
             break;
         }
         
-        case 10: // [SIO R, X, 2] // WORK ON THIS RED FUNCTION
+        case 10: // [SIO R, X, 2] 
         {
-            vm->PC = ins.m;
+            int val;
+            printf("Please, enter a value to read... ");
+            scanf("%d", &val);
+            vm->stack[vm->SP] = val;
             break;
         }
         
